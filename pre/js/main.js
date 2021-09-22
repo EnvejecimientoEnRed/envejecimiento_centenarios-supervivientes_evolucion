@@ -92,7 +92,7 @@ function initChart() {
         line = d3.line()
             .x(d => x_c(+d.Anyo))
             .y(d => y_c(d.supervivientes_total.replace(',','.')))
-            .curve(d3.curveMonotoneX);
+            .curve(d3.curveNatural);
 
         path_1 = chart.append("path")
             .data([innerData])
