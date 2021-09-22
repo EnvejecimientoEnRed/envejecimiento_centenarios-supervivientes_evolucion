@@ -8,29 +8,30 @@ import 'url-search-params-polyfill';
 
 //Desarrollo de la visualización
 import * as d3 from 'd3';
-import * as d3_reg from 'd3-regression';
 
 //Necesario para importar los estilos de forma automática en la etiqueta 'style' del html final
 import '../css/main.scss';
 
 ///// VISUALIZACIÓN DEL GRÁFICO //////
-let dataSource = 'https://raw.githubusercontent.com/EnvejecimientoEnRed/envejecimiento_alzheimer_evolucion/main/data/tasa_nal_alz.csv';
+let dataSource = 'https://raw.githubusercontent.com/CarlosMunozDiazCSIC/envejecimiento_centenarios-supervivientes_evolucion/main/data/centenarios_supervivientes.csv';
 let tooltip = d3.select('#tooltip');
 
 //Variables para visualización
 let innerData = [], chartBlock = d3.select('#chart'), chart, x_c, x_cAxis, y_c, y_cAxis;
-let line, regressionGenerator, path_1, length_1, path_2, length_2;
+let line, path_1, length_1;
 
 initChart();
 
 function initChart() {
-    d3.csv(dataSource, function (error, data) {
+    let csv = d3.dsvFormat(';');
+    d3.text(dataSource, function (error, data) {
         if (error) throw error;
 
-        innerData = data.slice(10,); //Nos quedamos con los datos a partir de 1990
+        innerData = csv.parse(data);
+        innerData = innerData.reverse();
 
         //Desarrollo del gráfico > Debemos hacer muchas variables genéricas para luego actualizar el gráfico
-        let margin = {top: 5, right: 22.5, bottom: 25, left: 24.5};
+        let margin = {top: 5, right: 17.5, bottom: 25, left: 40};
         let width = parseInt(chartBlock.style('width')) - margin.left - margin.right,
             height = parseInt(chartBlock.style('height')) - margin.top - margin.bottom;
 
@@ -44,11 +45,11 @@ function initChart() {
 
         //Eje X
         x_c = d3.scaleLinear()
-            .domain([1990,2019])
+            .domain([1991,2019])
             .range([0, width]);
 
         x_cAxis = function(g){
-            g.call(d3.axisBottom(x_c).ticks(5).tickFormat(function(d) { return d; }))
+            g.call(d3.axisBottom(x_c).tickFormat(function(d) { return d; }))
             g.call(function(g){
                 g.selectAll('.tick line')
                     .attr('y1', '0%')
@@ -64,7 +65,7 @@ function initChart() {
 
         //Eje Y
         y_c = d3.scaleLinear()
-            .domain([0, 90])
+            .domain([0, 4000])
             .range([height,0])
             .nice();
     
@@ -89,19 +90,15 @@ function initChart() {
 
         //Línea
         line = d3.line()
-            .x(d => x_c(d[0]))
-            .y(d => y_c(d[1]));
-        
-        regressionGenerator = d3_reg.regressionLoess()
-            .x(d => +d.periodo)
-            .y(d => +d.tasa)
-            .bandwidth(0.27);
+            .x(d => x_c(+d.Anyo))
+            .y(d => y_c(d.supervivientes_total.replace(',','.')))
+            .curve(d3.curveMonotoneX);
 
         path_1 = chart.append("path")
-            .datum(regressionGenerator(innerData))
+            .data([innerData])
             .attr("class", 'line-chart')
             .attr("fill", "none")
-            .attr("stroke", '#296161')
+            .attr("stroke", 'rgb(41, 101, 101)')
             .attr("stroke-width", '2px')
             .attr("d", line);
 
@@ -119,10 +116,11 @@ function initChart() {
             .enter()
             .append('circle')
             .attr('class', 'circle-chart')
-            .attr("r", '4')
-            .attr("cx", function(d) { return x_c(+d.periodo)})
-            .attr("cy", function(d) { return y_c(+d.tasa); })
-            .style("fill", '#9E9E9E')
+            .attr("r", '3.5')
+            .attr("cx", function(d) { return x_c(+d.Anyo)})
+            .attr("cy", function(d) { return y_c(d.supervivientes_total.replace(',','.')); })
+            .style("fill", 'transparent')
+            .style("stroke", 'rgb(41, 101, 101)')
             .style('opacity', '0')
             .on('mouseenter mousedown mousemove mouseover', function(d, i, e) {
                 let circles = document.getElementsByClassName('circle-chart');
@@ -132,12 +130,11 @@ function initChart() {
                     circles[i].style.opacity = '0.4';
                 }
                 this.style.opacity = '1';
-                
-                let data = +d.tasa;
-                data = data.toFixed(1);
 
                 //Texto
-                let html = '<p class="chart__tooltip--title">' + d.periodo + '</p>' + '<p class="chart__tooltip--text">Tasa de mortalidad: ' + data.replace('.',',') + ' por cada 100.000 personas con 65 años o más</p>';
+                let html = '<p class="chart__tooltip--title">' + d.Anyo + '</p>' + '<p class="chart__tooltip--text">Media ponderada: ' + numberWithCommas2(parseInt(d.supervivientes_total.replace('.',','))) + '</p>' +
+                '<p class="chart__tooltip--text">Mujeres: ' + numberWithCommas2(parseInt(d.supervivientes_mujeres.replace('.',','))) + '</p>' + 
+                '<p class="chart__tooltip--text">Hombres: ' + numberWithCommas2(parseInt(d.supervivientes_hombres.replace('.',','))) + '</p>';
                 
                 tooltip.html(html);
 
@@ -167,10 +164,10 @@ function initChart() {
 function animateChart() {
     //Opción de tener dos líneas
     path_1 = chart.select(".line-chart")
-        .datum(regressionGenerator(innerData))
+        .data([innerData])
         .attr("class", 'line-chart')
         .attr("fill", "none")
-        .attr("stroke", '#296161')
+        .attr("stroke", 'rgb(41, 101, 101)')
         .attr("stroke-width", '2px')
         .attr("d", line);
 
@@ -192,10 +189,11 @@ function animateChart() {
         .enter()
         .append('circle')
         .attr('class', 'circle-chart')  
-        .attr("r", '4')
-        .attr("cx", function(d) { return x_c(+d.periodo)})
-        .attr("cy", function(d) { return y_c(+d.tasa); })
-        .style("fill", '#9E9E9E')
+        .attr("r", '3.5')
+        .attr("cx", function(d) { return x_c(+d.Anyo)})
+        .attr("cy", function(d) { return y_c(+d.supervivientes_total.replace(',','.')); })
+        .style('fill', 'transparent')
+        .style("stroke", 'rgb(41, 101, 101)')
         .style('opacity', '0')
         .on('mouseenter mousedown mousemove mouseover', function(d, i, e) {
             let circles = document.getElementsByClassName('circle-chart');
@@ -210,7 +208,9 @@ function animateChart() {
             data = data.toFixed(1);
 
             //Texto
-            let html = '<p class="chart__tooltip--title">' + d.periodo + '</p>' + '<p class="chart__tooltip--text">Tasa de mortalidad: ' + data.replace('.',',') + ' por cada 100.000 personas con 65 años o más</p>';
+            let html = '<p class="chart__tooltip--title">' + d.Anyo + '</p>' + '<p class="chart__tooltip--text">Media ponderada: ' + numberWithCommas2(parseInt(d.supervivientes_total.replace('.',','))) + '</p>' +
+            '<p class="chart__tooltip--text">Mujeres: ' + numberWithCommas2(parseInt(d.supervivientes_mujeres.replace('.',','))) + '</p>' + 
+            '<p class="chart__tooltip--text">Hombres: ' + numberWithCommas2(parseInt(d.supervivientes_hombres.replace('.',','))) + '</p>';
             
             tooltip.html(html);
 

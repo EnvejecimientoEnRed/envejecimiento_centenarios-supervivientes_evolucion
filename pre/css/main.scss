@@ -63,10 +63,10 @@ body, button {
 //Contenedores genéricos > En su interior, elementos propios de cada contenedor
 .b-chart {
     .chart {
-        &__logics {            
+        &__logics {
+            //En este caso sólo contamos con el botón de animación        
             display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
+            justify-content: flex-end;            
         }
 
         &__options {
