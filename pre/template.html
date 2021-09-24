@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Evolución de los centenarios supervivientes en España</title>
+    <title>Evolución de la supervivencia en España a los 65, 85 y 100 años</title>
     <meta name="mrf-extractable" content="false">
     <meta property='og:image' content=''>
-    <meta property="og:title" content="Evolución de los centenarios supervivientes en España">
+    <meta property="og:title" content="Evolución de la supervivencia en España a los 65, 85 y 100 años">
     <meta property="og:description" content="Gráfico lineal que muestra la evolución de la tasa de mortalidad en España">
     <meta property="og:image" content="https://raw.githubusercontent.com/CarlosMunozDiazCSIC/envejecimiento_centenarios-supervivientes_evolucion/main/pre/cchs.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,10 +17,15 @@
         <div class="main">
             <section class="content b-chart active" id="chartBlock">
                 <div class="b-title">
-                    <h1 class="title">Evolución de los centenarios supervivientes en España</h1>
-                    <h2 class="subtitle">Gráfico 6/2021. Datos entre 1991 y 2019. --- Explicación sobre qué datos estamos mostrando en esta visualización --- </h2>
+                    <h1 class="title">Evolución de la supervivencia en España a los 65, 85 y 100 años</h1>
+                    <h2 class="subtitle">Gráfico 5/2021. Datos entre 1991 y 2019. Datos a nivel nacional.</h2>
                 </div>
                 <div class="chart__logics">
+                    <div class="chart__legend">
+                        <span class="chart__legend--item first">65 años</span>
+                        <span class="chart__legend--item second">85 años</span>
+                        <span class="chart__legend--item third">100 y más años</span>
+                    </div>
                     <div class="chart__animate" id="replay">
                         <button class="btn btn__animate">
                             <i class="fa fa--share fa-repeat" aria-hidden="true"></i>
@@ -32,7 +37,7 @@
                 <!-- Pie de gráfico -->
                 <div class="chart__footer">
                     <div class="chart__source">
-                        <p class="chart__source--data"><span>Fuente: </span>INE y Departamento de Población, CSIC</p>
+                        <p class="chart__source--data"><span>Fuente: </span>Tablas de mortalidad (INE) y Departamento de Población, CSIC</p>
                         <p class="chart__source--copyright"><a class="link" href="https://creativecommons.org/licenses/by/4.0/deed.en_US" target="_blank">CC BY 4.0</a></p>
                     </div>
                 </div>
@@ -55,7 +60,7 @@
                 </div>
                 <p class="text__header">Descarga de datos</p>
                 <p class="text__paragraph">Los datos procesados en esta visualización los puede encontrar en <a class="link" href="https://github.com/CarlosMunozDiazCSIC/envejecimiento_centenarios-supervivientes_evolucion" target="_blank">este repositorio de Github</a>.</p>
-                <p class="text__paragraph">Si desea descargarlos, puede hacerlo desde <a class="link" href="https://raw.githubusercontent.com/CarlosMunozDiazCSIC/envejecimiento_centenarios-supervivientes_evolucion/main/data/tasa_nal_alz.csv" target="_blank">aquí</a>.</p>
+                <p class="text__paragraph">Si desea descargarlos, puede hacerlo desde <a class="link" href="https://raw.githubusercontent.com/CarlosMunozDiazCSIC/envejecimiento_centenarios-supervivientes_evolucion/main/data/centenarios_supervivientes.csv" target="_blank">aquí</a>.</p>
                 <p class="text__header">Descargar como PNG</p>
                 <p class="text__paragraph">También puede descargar el gráfico como una imagen .png haciendo click <button class="btn_share" id="pngImage">aquí</button></p> 
                 <p class="text__paragraph">El gráfico se descargará con los últimos filtros que haya utilizado.</p>
@@ -81,9 +86,9 @@
                 <p class="text__paragraph">Existe la posibilidad de compartir la visualización a través de las redes sociales. Puede hacerlo clicando en alguno de los siguientes iconos:</p>
                 <div class="rrss">
                     <a href="#" class="fa fa-facebook" id="shareFB" target="_blank"></a>
-                    <a href="#" class="fa fa-twitter" id="shareTW" data-text="Evolución de los centenarios supervivientes en España" target="_blank"></a>
-                    <a href="#" class="fa fa-linkedin" id="shareLK" data-text="Evolución de los centenarios supervivientes en España" target="_blank"></a>
-                    <a href="#" class="fa fa-whatsapp" id="shareWA" data-text="Evolución de los centenarios supervivientes en España" target="_blank"></a>
+                    <a href="#" class="fa fa-twitter" id="shareTW" data-text="Evolución de la supervivencia en España a los 65, 85 y 100 años" target="_blank"></a>
+                    <a href="#" class="fa fa-linkedin" id="shareLK" data-text="Evolución de la supervivencia en España a los 65, 85 y 100 años" target="_blank"></a>
+                    <a href="#" class="fa fa-whatsapp" id="shareWA" data-text="Evolución de la supervivencia en España a los 65, 85 y 100 años" target="_blank"></a>
                 </div>
             </section>
         </div>        

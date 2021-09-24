@@ -13,12 +13,12 @@ import * as d3 from 'd3';
 import '../css/main.scss';
 
 ///// VISUALIZACIÓN DEL GRÁFICO //////
-let dataSource = 'https://raw.githubusercontent.com/CarlosMunozDiazCSIC/envejecimiento_centenarios-supervivientes_evolucion/main/data/centenarios_supervivientes.csv';
+let dataSource = 'https://raw.githubusercontent.com/CarlosMunozDiazCSIC/envejecimiento_centenarios-supervivientes_evolucion/main/data/evolucion_supervivientes.csv';
 let tooltip = d3.select('#tooltip');
 
 //Variables para visualización
 let innerData = [], chartBlock = d3.select('#chart'), chart, x_c, x_cAxis, y_c, y_cAxis;
-let line, path_1, length_1;
+let line_1, path_1, length_1, line_2, path_2, length_2, line_3, path_3, length_3;
 
 initChart();
 

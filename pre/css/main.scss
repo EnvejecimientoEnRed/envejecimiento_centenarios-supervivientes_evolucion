@@ -63,19 +63,55 @@ body, button {
 //Contenedores genéricos > En su interior, elementos propios de cada contenedor
 .b-chart {
     .chart {
-        &__logics {
-            //En este caso sólo contamos con el botón de animación        
+        &__logics {            
             display: flex;
-            justify-content: flex-end;            
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
 
-        &__options {
+        
+        &__legend {
+            margin-top: 8px;
             display: flex;
 
-            & button:not(:last-child) {
-                margin-right: 8px;
+            &--item {
+                position: relative;
+
+                display: flex;
+                align-items: center;
+
+                font-style: normal;
+                font-weight: normal;
+                font-size: 0.9em;
+                line-height: 10px;  
+                
+                padding-left: 22px;
+                margin-right: 16px;
+
+                //En función de la clase CSS que le acompañe, tendrá un color u otro
+                &::before {
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    left: 0;
+                    transform: translateY(-50%);
+                    width: 18px;
+                    height: 2px;
+                }
+
+                &.first::before {
+                    background-color: #C36B6B;
+                }
+
+                &.second::before {
+                    background-color: #C3A66B;
+                }
+
+                &.third::before {
+                    background-color: #296161;
+                }
             }
-        }
+        }        
 
         //Visualización
         &__viz {
